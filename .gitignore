@@ -1,8 +1,26 @@
-# .gitignore for play framework # 
-logs
-project/project
-project/target
-target
+# from https://gist.github.com/klaeufer/1705986
+# general
+*~
+*.log
 tmp
-dist
+dump
+ 
+# Eclipse
+.settings
 .cache
+.project
+.classpath
+.scala_dependencies
+bin
+ 
+# SBT
+dist
+project/boot
+project/target
+project/plugins/target
+target
+.target
+ 
+# Play
+logs
+RUNNING_PID
