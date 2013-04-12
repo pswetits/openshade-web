@@ -1,6 +1,8 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+# Play framework #
+logs
+project/project
+project/target
+target
+tmp
+dist
+.cache
