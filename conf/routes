@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET		/results.html				controllers.Application.results()
+GET     /                          controllers.Application.index()
+GET		/results					controllers.Application.results(valid:Boolean)
 POST	/							controllers.Application.upload()
 
 # Map static resources from the /public folder to the /assets URL path

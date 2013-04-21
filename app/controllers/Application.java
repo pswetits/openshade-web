@@ -14,21 +14,31 @@ import models.*;
 public class Application extends Controller {
   
     public static Result index() {
-        return ok(index.render("OpenShade"));
+        return ok(index.render("OpenShade", "good"));
+       
+    }
+
+    public static Result results(Boolean valid) {
+    	if (valid)
+    		return ok(results.render("Results"));
+    	else return ok(index.render("OpenShade", "error"));
     }
 
     public static Result upload() {
  		MultipartFormData body = request().body().asMultipartFormData();
-  		FilePart input = body.getFile("input");
+  		FilePart input = body.getFile("inputFile");
+
+  		System.out.println(input.getFile());
+
   		if (input != null) {
     		String fileName = input.getFilename();
     		String contentType = input.getContentType(); 
     		File file = input.getFile();
     		SeqFile seq = new SeqFile(file);
-    		return ok("File uploaded");
-  		} else {
+			return redirect(routes.Application.results(true));		
+		} else {
     		flash("error", "Missing file");
-    		return redirect(routes.Application.index());    
+    		return redirect(routes.Application.results(false));    
   		}
 	}
   
