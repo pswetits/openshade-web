@@ -1,1 +1,1 @@
-web:    play run --http.port=$PORT $PLAY_OPTS
+web:    play run -Xmx256M --%prod --http.port=$PORT -Dprecompiled=true
