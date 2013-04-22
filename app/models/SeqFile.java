@@ -1,7 +1,7 @@
 package models;
 
-import java.util.Vector;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
@@ -10,7 +10,7 @@ public class SeqFile {
 	public File inputFile;
 	String[] names;
 	String[] sequences;
-	static Vector<AminoAcidSequence> storedAlignment;
+	static ArrayList<AminoAcidSequence> storedAlignment;
 	int seqCounter;
 	AAShader shadeDriver;
 	
@@ -18,8 +18,14 @@ public class SeqFile {
 		inputFile = inFile;
 		readIn(inputFile);
 
-		//System.out.println(names[1]);
+		try{
+			shadeDriver = new AAShader(storedAlignment, seqCounter);
+		}
+		catch (IOException e) {
+			//do something
+		}
 
+		writeToPDF();
 	}
 
 	/** read in sequence */
@@ -80,7 +86,7 @@ public class SeqFile {
 	}
 
 	private void store(String alignment){
-		storedAlignment = new Vector<AminoAcidSequence>(500);
+		storedAlignment = new ArrayList<AminoAcidSequence>(500);
 		
 		/** first extract sequences */
 		extractSequences(alignment);
@@ -90,8 +96,6 @@ public class SeqFile {
 			storedAlignment.add(new AminoAcidSequence(sequences[y], names[y]));
 		}
 		
-		/** call to create table */
-		//showTable();	
 	}
 
 		/**
@@ -196,24 +200,9 @@ public class SeqFile {
 		storedAlignment.get(y).setAA(x, aa);
 	}
 
-	public void shadeIdentities() {
-		// TODO Auto-generated method stub
-		shadeDriver.shadeIdentities();
-	}
+	public static void writeToPDF(){
 
-	public void shadeSimilarities() {
-		// TODO Auto-generated method stub
-		shadeDriver.shadeSimilarities();
 	}
-	
-	public void shadeOtherSimilarities() {
-		shadeDriver.shadeOtherSimilarities();
-	}
-	
-	public void setDefaultShading() {
-		shadeDriver.setDefaultShading();
-	}
-
 }
 
 

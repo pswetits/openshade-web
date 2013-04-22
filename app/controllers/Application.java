@@ -28,8 +28,6 @@ public class Application extends Controller {
  		MultipartFormData body = request().body().asMultipartFormData();
   		FilePart input = body.getFile("inputFile");
 
-  		System.out.println(input.getFile());
-
   		if (input != null) {
     		String fileName = input.getFilename();
     		String contentType = input.getContentType(); 

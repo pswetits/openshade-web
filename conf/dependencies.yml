@@ -1,0 +1,11 @@
+require:
+  - play
+  - provided -> itext 5.4.1
+
+repositories:
+  - provided:
+      type:       local
+      descriptor: "${application.path}/../[module]/conf/dependencies.yml"
+      artifact:   "${application.path}/jar/[module]-[revision].jar"
+      contains:
+        - provided -> *

@@ -4,6 +4,7 @@
 *.log
 tmp
 dump
+Procfile
  
 # Eclipse
 .settings

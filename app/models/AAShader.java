@@ -2,8 +2,7 @@ package models;
 
 
 import java.io.*;
-import java.util.Vector;
-
+import java.util.ArrayList;
 import matrices.Blosum62;
 
 
@@ -14,22 +13,31 @@ public class AAShader {
 	/**
 	 * instance data, vector of AminoAcidSequences 
 	 */
-	Vector<AminoAcidSequence> sequences;
-	int consensusPercent = 3;
+	ArrayList<AminoAcidSequence> sequences;
+	int seqNum;
+	int consensusPercent;
 	int consensusCounter = 0;
 	int similarityCounter = 0;
 	
 	/**
 	 * constructor sets sequences and calls shade()
 	 */
-	public AAShader(Vector<AminoAcidSequence>sequences) throws IOException{
+	public AAShader(ArrayList<AminoAcidSequence>sequences, int seqNum) throws IOException{
 		this.sequences = sequences;
+		this.seqNum = seqNum;
+
+		if (seqNum % 2 != 0)
+			consensusPercent = seqNum / 2 + 1;
+		else consensusPercent = seqNum / 2;
+
+		shadeIdentities();
+		shadeSimilarities();
 	}
 	
 	public void setDefaultShading() {
 		int x = 0;
 		while(x < sequences.get(0).getLength()){
-			for(int i = 0; i < 5; i++)
+			for(int i = 0; i < seqNum; i++)
 				sequences.get(i).getAAType(x).setShading(0);
 		x++;
 		}
@@ -42,19 +50,19 @@ public class AAShader {
 		
 		int x = 0;
 		while(x < sequences.get(0).getLength()){ /** increment through each AA position */
-			if(sequences.get(0).getAA(x).equals(sequences.get(1).getAA(x)) &&
-				sequences.get(0).getAA(x).equals(sequences.get(2).getAA(x)) &&
-				sequences.get(0).getAA(x).equals(sequences.get(3).getAA(x)) &&
-				sequences.get(0).getAA(x).equals(sequences.get(4).getAA(x))){
-				
-				for(int i = 0; i < 5; i++) 
-					sequences.get(i).getAAType(x).setShading(1);	
-			}	
-			x++;
+			boolean identical = true;
+			for (int j = 1; j < seqNum; j++)
+				if (!sequences.get(j-1).getAA(x).equals(sequences.get(j-1).getAA(x)))
+					identical = false;
 
+			if (identical) {
+				for(int i = 0; i < seqNum; i++) 
+					sequences.get(i).getAAType(x).setShading(1);	
+			}
+			x++;
 		}
-		//OpenGUI.refresh();
 	}
+	
 	
 		
 	/**
@@ -83,8 +91,7 @@ public class AAShader {
 
 		}
 		//OpenGUI.refresh();
-	
-}
+	}
 		
 	/**
 	 * shading method for semi-conserved columns
@@ -109,16 +116,16 @@ public class AAShader {
 
 	}
 	
-	/**
-	 * shading method for semi-conserved columns with two consensus 
-	 */
+	/*
+	 shading method for semi-conserved columns with two consensus 
+	 
 	public void shadeOtherSimilarities(){
 		int x = 0;
 		while(x < sequences.get(0).getLength()){
 			String c = getConsensus(x);
 			if(!c.equals("-")){
 				for(int i = 0; i < 5; i++){
-					/** chars of current AA and consensus AA */
+					/** chars of current AA and consensus AA 
 					String current = sequences.get(i).getAA(x);
 					String consensus = c; 
 			
@@ -126,7 +133,7 @@ public class AAShader {
 					//if(current == consensus)
 						//sequences.get(i).getAAType(x).setShading(2);
 			
-					/** shade grey if score of current and consensus is 0 or above */
+					/** shade grey if score of current and consensus is 0 or above 
 					if(Blosum62.getScore(consensus, current) > 0 && sequences.get(i).getAAType(x).getShading() == 0)
 						sequences.get(i).getAAType(x).setShading(3);
 	
@@ -138,7 +145,7 @@ public class AAShader {
 
 	}
 	
-	/**
+	
 	 * get AA consensus throughout all proteins at given position x 
 	 */
 	public String getConsensus(int x){
@@ -149,12 +156,12 @@ public class AAShader {
 		String tempAA = "";
 		
 		/** increment through each AA */
-		for(int z = 0; z < 5; z++){
+		for(int z = 0; z < seqNum; z++){
 			tempAA = sequences.get(z).getAA(x);
 			tempCounter = 0;
 			
 			/** compare tempAA to other AA in column */
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < seqNum; i++){
 				if(tempAA.equals(sequences.get(i).getAA(x)))
 					tempCounter++;	/** increment tempCounter if match */
 			}
