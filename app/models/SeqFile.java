@@ -205,7 +205,7 @@ public class SeqFile {
 	public void createPdf() {
 		try {
 			SequenceTable st = new SequenceTable(storedAlignment);
-			JTable2Pdf pdf = new JTable2Pdf(st.getTable());
+			JTable2Pdf pdf = new JTable2Pdf(st.getTable(), names[0]);
 		}
 		catch(Exception e){
 			e.printStackTrace();

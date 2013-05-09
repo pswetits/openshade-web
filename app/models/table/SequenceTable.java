@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+import java.awt.Dimension;
 import models.*;
 
 public class SequenceTable extends JTable{
@@ -34,7 +35,7 @@ public class SequenceTable extends JTable{
 	        }
 	    }; 
 	   	table.setDefaultRenderer(Object.class, tableRenderer );
-
+	   	table.setIntercellSpacing(new Dimension(0, 0));
 	    
 	    /**
 	     * add table header renderer 
