@@ -1,5 +1,7 @@
 package models;
 
+import models.table.*;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,7 +27,7 @@ public class SeqFile {
 			//do something
 		}
 
-		writeToPDF();
+		createPdf();
 	}
 
 	/** read in sequence */
@@ -200,9 +202,16 @@ public class SeqFile {
 		storedAlignment.get(y).setAA(x, aa);
 	}
 
-	public static void writeToPDF(){
-
+	public void createPdf() {
+		try {
+			SequenceTable st = new SequenceTable(storedAlignment);
+			JTable2Pdf pdf = new JTable2Pdf(st.getTable());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
+
 }
 
 
