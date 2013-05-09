@@ -1,6 +1,7 @@
 package models;
 
 import models.table.*;
+import models.s3.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,6 +25,7 @@ public class JTable2Pdf {
     private JFrame frame;
     JScrollPane scrollPane;
     String fileName;
+    File outputfile;
 
     public JTable2Pdf(JTable table, String fileName) throws Exception {
         this.table = table;
@@ -48,12 +50,20 @@ public class JTable2Pdf {
         
         try{
             BufferedImage bi = ScreenImage.createImage(scrollPane);
-            ScreenImage.writeImage(bi, fileName + ".jpg");
+            //file = new File(bi);
+
+            //ScreenImage.writeImage(bi, fileName + ".jpg");
+            outputfile = new File(fileName+".jpg");
+            ImageIO.write(bi, "png", outputfile);
+            upload();
         } catch(Exception e){
             e.printStackTrace();
         } 
     } 
 
+    public void upload(){
+        //S3Driver s3 = new S3Driver(outputfile, fileName);
+    }
 
 }
 

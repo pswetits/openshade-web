@@ -19,8 +19,9 @@ public class Application extends Controller {
     }
 
     public static Result results(Boolean valid) {
-    	if (valid)
+    	if (valid){
     		return ok(results.render("Results"));
+        }
     	else return ok(index.render("OpenShade", "error"));
     }
 
